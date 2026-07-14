@@ -15,17 +15,12 @@ class SavingsAccount(BankAccount):
         super().__init__(owner, balance, account_number)
         self.minimum_balance = minimum_balance
 
-        def withdraw(self, amount):
-            '''
-            Withdraw money while preserving the required minimum balance.
-            Raises:
-                ValueError: If the amount is not positive, exceeds the balance,
-                    or would reduce the balance below the required minimum.
-            '''
-            if amount <= 0:
-                raise ValueError("Withdrawal amount must be positive")
-            if amount > self.balance:
-                raise ValueError("Insufficient funds")
-            if self.balance - amount < self.minimum_balance:
-                raise ValueError("Withdrawal would violate minimum balance requirement")
-            return super.withdaw(amount)
+    def withdraw(self, amount):
+        '''Withdraw money while preserving the required minimum balance.'''
+        if amount <= 0:
+            raise ValueError("Withdrawal amount must be positive")
+        if amount > self.balance:
+            raise ValueError("Insufficient funds")
+        if self.balance - amount < self.minimum_balance:
+            raise ValueError("Withdrawal would violate minimum balance requirement")
+        return super().withdraw(amount)

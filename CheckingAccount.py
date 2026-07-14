@@ -40,6 +40,6 @@ class CheckingAccount(BankAccount):
             raise ValueError("Insufficient funds")
         
         self.balance -= amount
-        self._record_transaction(TransactionType.DEPOSIT, amount)
+        self._record_transaction(TransactionType.WITHDRAWAL, amount)
         print(f"Withdrawal of ${amount:.2f} successful.\nNew balance: ${self.balance:.2f}")
         return self.balance
