@@ -1,7 +1,7 @@
 from CheckingAccount import CheckingAccount
 from Customer import Customer
 from SavingsAccount import SavingsAccount
-
+from fastapi.middleware.cors import CORSMiddleware
 '''
 This just simply displays our menu to the user
 
