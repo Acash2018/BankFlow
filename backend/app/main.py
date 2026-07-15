@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.routers import accounts, customers, health
@@ -27,6 +28,13 @@ def create_app(repository: BankRepository | None = None) -> FastAPI:
         description="Backend API for customers, bank accounts, and transactions.",
         version="1.0.0",
         lifespan=lifespan,
+    )
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
     # Also initialize here for TestClient and direct ASGI inspection.
     application.state.bank = selected_repository
