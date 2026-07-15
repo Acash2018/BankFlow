@@ -1,9 +1,683 @@
-:root { --ink:#17231d; --muted:#718078; --line:#dde3dc; --green:#176b4b; --lime:#d9f36a; --navy:#10241d; --paper:#fff; }
-.shell{min-height:100vh;display:grid;grid-template-columns:248px 1fr;background:#f4f6f2}.sidebar{position:sticky;top:0;height:100vh;background:var(--navy);color:#dbe6df;padding:32px 22px;display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:12px;font:700 22px 'Manrope';color:#fff;padding:0 8px 38px}.brand>span:last-child span{color:var(--lime)}.brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:var(--lime);color:var(--navy)}.sidebar nav{display:grid;gap:7px}.sidebar nav button{border:0;background:transparent;color:#8fa29a;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px;text-align:left}.sidebar nav button.active,.sidebar nav button:hover{background:#1d392f;color:#fff}.side-foot{margin-top:auto;padding:17px 14px;border-top:1px solid #294037;font-size:13px}.side-foot small{display:block;color:#71877e;margin:5px 0 0 16px}.status-dot{display:inline-block;width:8px;height:8px;background:#7bdc8b;border-radius:50%;margin-right:8px;box-shadow:0 0 0 4px #254a38}
-main{padding:44px clamp(24px,4vw,68px);max-width:1500px;width:100%;margin:auto}header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:34px}h1,h2,h3,p{margin:0}h1{font:800 clamp(30px,4vw,44px) 'Manrope';letter-spacing:-1.8px;margin:5px 0 7px}header p{color:var(--muted)}.eyebrow{text-transform:uppercase;letter-spacing:1.5px;font-size:11px;font-weight:700;color:#819087}.primary,.secondary{border:0;border-radius:10px;padding:13px 18px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px}.primary{background:var(--green);color:#fff;box-shadow:0 7px 18px #176b4b25}.primary:hover{background:#115c40}.secondary{background:#edf3ee;color:var(--green);padding:10px 14px}.secondary svg{width:17px}.toast{position:fixed;z-index:20;right:28px;top:24px;border-radius:10px;padding:13px 16px;display:flex;gap:24px;box-shadow:0 12px 35px #17231d2c;color:#fff}.toast span{font-size:20px}.toast.error{background:#a4423a}.toast.success{background:var(--green)}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.metrics article{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:20px;display:flex;gap:15px;align-items:center}.metric-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center}.metric-icon.green{background:#e0f2e8;color:#267153}.metric-icon.blue{background:#e4edf5;color:#416985}.metric-icon.amber{background:#fff0d7;color:#9b692a}.metrics article>div:last-child{display:grid}.metrics span{font-size:12px;color:var(--muted)}.metrics strong{font:700 22px 'Manrope';margin:1px 0}.metrics small{color:#98a39d;font-size:11px}
-.workspace{display:grid;grid-template-columns:minmax(280px,.72fr) minmax(500px,1.5fr);gap:20px}.panel{background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;min-height:560px}.panel-head{padding:23px 24px 19px;border-bottom:1px solid #edf0ed;display:flex;align-items:center;justify-content:space-between}.panel h2{font:700 19px 'Manrope';letter-spacing:-.4px;margin-top:4px}.count{background:#eef2ee;color:#68766e;border-radius:20px;padding:5px 10px;font-size:12px}.customer-list{padding:10px}.customer{width:100%;border:0;background:transparent;border-radius:12px;display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:11px;padding:12px;text-align:left;color:var(--ink)}.customer:hover,.customer.active{background:#f0f5f1}.customer.active{box-shadow:inset 3px 0 var(--green)}.avatar{width:42px;height:42px;border-radius:50%;background:#dfece4;color:var(--green);display:grid;place-items:center;font-weight:700;font-size:12px}.customer>span:nth-child(2){display:grid;min-width:0}.customer strong{font-size:14px}.customer small{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.customer-total{font-size:12px;font-weight:700;color:var(--green)}
-.empty{min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa69f;text-align:center;gap:8px;padding:25px}.empty svg{width:30px;height:30px}.empty strong{color:#607068}.empty.large{min-height:440px}.empty.compact{min-height:110px}.account-tabs{padding:18px 22px;display:flex;gap:10px;overflow:auto}.account-tabs button{min-width:145px;border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px 13px;text-align:left;display:grid;color:var(--ink)}.account-tabs button.active{background:var(--navy);color:#fff;border-color:var(--navy)}.account-tabs span{text-transform:uppercase;font-size:9px;letter-spacing:1px;opacity:.65}.account-tabs strong{font-size:13px;margin-top:4px}.account-detail{padding:2px 24px 24px}.balance-block{padding:25px;border-radius:15px;background:linear-gradient(135deg,#1a6f50,#0d3e2c);color:#fff;position:relative;overflow:hidden}.balance-block:after{content:'';position:absolute;width:180px;height:180px;border:35px solid #ffffff0a;border-radius:50%;right:-65px;top:-80px}.balance-block span{font-size:12px;color:#b8d3c7}.balance-block strong{display:block;font:800 34px 'Manrope';letter-spacing:-1.2px;margin:5px 0}.balance-block small{color:#a9c9bb;text-transform:capitalize}.money-actions{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin:14px 0 24px}.money-actions input{min-width:100px;border:1px solid var(--line);border-radius:9px;padding:11px 13px;outline:none}.money-actions input:focus{border-color:var(--green)}.money-actions button{border:0;border-radius:9px;background:#dff0e7;color:var(--green);font-weight:700;padding:0 15px}.money-actions button.withdraw{background:#f5e9e7;color:#9c4841}.transactions-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #edf0ed;padding-bottom:11px}.transactions-head h3{font:700 15px 'Manrope'}.transactions-head span{font-size:11px;color:var(--muted)}.transaction{display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #f0f2f0}.transaction-icon{width:36px;height:36px;border-radius:50%;display:grid;place-items:center}.transaction-icon svg{width:16px}.transaction-icon.deposit{background:#e5f2ea;color:var(--green);transform:rotate(90deg)}.transaction-icon.withdrawal{background:#f7e9e7;color:#a34c44;transform:rotate(-90deg)}.transaction>div{display:grid}.transaction strong{text-transform:capitalize;font-size:13px}.transaction small{font-size:10px;color:var(--muted)}.transaction b{font-size:13px}.transaction b.deposit{color:var(--green)}.transaction b.withdrawal{color:#a34c44}
-.modal-backdrop{position:fixed;inset:0;background:#0c1c16ad;backdrop-filter:blur(4px);z-index:50;display:grid;place-items:center;padding:20px}.modal{background:#fff;border-radius:18px;width:min(500px,100%);padding:27px;box-shadow:0 25px 70px #08120e60}.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px}.modal h2{font:800 24px 'Manrope';margin-top:4px}.close{border:0;background:#eff2ef;border-radius:50%;width:34px;height:34px;font-size:22px;color:#65736c}.modal form{display:grid;gap:15px}.modal label{display:grid;gap:6px;font-size:12px;font-weight:700;color:#58675f}.modal input,.modal select{width:100%;border:1px solid var(--line);border-radius:9px;padding:12px 13px;background:#fff;outline:none;color:var(--ink)}.modal input:focus,.modal select:focus{border-color:var(--green);box-shadow:0 0 0 3px #176b4b12}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.submit{width:100%;margin-top:7px}
-@media(max-width:1000px){.shell{grid-template-columns:76px 1fr}.sidebar{padding:25px 12px}.brand{padding:0 6px 35px}.brand>span:last-child,.sidebar nav button:not(.active){font-size:0}.sidebar nav button{justify-content:center;padding:13px}.sidebar nav button.active{font-size:0}.side-foot{font-size:0;padding:16px 8px}.side-foot small{display:none}.status-dot{margin:0}.workspace{grid-template-columns:1fr}.customer-panel{min-height:auto}.customer-list{max-height:300px;overflow:auto}}
-@media(max-width:680px){.shell{display:block}.sidebar{position:static;height:auto;flex-direction:row;align-items:center;padding:14px 18px}.brand{padding:0}.brand>span:last-child{display:block}.sidebar nav{margin-left:auto;display:flex}.sidebar nav button{display:none}.sidebar nav button.active{display:flex}.side-foot{display:none}main{padding:25px 15px}header{align-items:flex-start;gap:18px}header .primary{font-size:0;padding:13px}.metrics{grid-template-columns:1fr}.workspace{display:block}.account-panel{margin-top:15px}.panel{min-height:auto}.money-actions{grid-template-columns:1fr 1fr}.money-actions input{grid-column:1/-1}.form-row{grid-template-columns:1fr}}
+/* Shared colors used throughout the BankFlow interface. Keeping these values
+   in one place makes future branding changes easier and more consistent. */
+:root {
+  --ink: #17231d;
+  --muted: #718078;
+  --line: #dde3dc;
+  --green: #176b4b;
+  --lime: #d9f36a;
+  --navy: #10241d;
+  --paper: #fff;
+}
+/* Main application shell: a fixed-width navigation column beside the
+   flexible dashboard content area. */
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  background: #f4f6f2;
+}
+/* Primary navigation stays visible while the dashboard content scrolls. */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--navy);
+  color: #dbe6df;
+  padding: 32px 22px;
+  display: flex;
+  flex-direction: column;
+}
+/* BankFlow wordmark and compact bank icon. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 700 22px "Manrope";
+  color: #fff;
+  padding: 0 8px 38px;
+}
+.brand > span:last-child span {
+  color: var(--lime);
+}
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--lime);
+  color: var(--navy);
+}
+.sidebar nav {
+  display: grid;
+  gap: 7px;
+}
+.sidebar nav button {
+  border: 0;
+  background: transparent;
+  color: #8fa29a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+.sidebar nav button.active,
+.sidebar nav button:hover {
+  background: #1d392f;
+  color: #fff;
+}
+/* Connection indicator shown at the bottom of the navigation. */
+.side-foot {
+  margin-top: auto;
+  padding: 17px 14px;
+  border-top: 1px solid #294037;
+  font-size: 13px;
+}
+.side-foot small {
+  display: block;
+  color: #71877e;
+  margin: 5px 0 0 16px;
+}
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #7bdc8b;
+  border-radius: 50%;
+  margin-right: 8px;
+  box-shadow: 0 0 0 4px #254a38;
+}
+/* The main element is centered but remains fluid on larger displays. */
+main {
+  padding: 44px clamp(24px, 4vw, 68px);
+  max-width: 1500px;
+  width: 100%;
+  margin: auto;
+}
+/* Dashboard introduction and primary customer action. */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 34px;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1 {
+  font: 800 clamp(30px, 4vw, 44px) "Manrope";
+  letter-spacing: -1.8px;
+  margin: 5px 0 7px;
+}
+header p {
+  color: var(--muted);
+}
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #819087;
+}
+/* Shared button styles. Primary buttons perform major actions, while
+   secondary buttons support actions within a panel. */
+.primary,
+.secondary {
+  border: 0;
+  border-radius: 10px;
+  padding: 13px 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.primary {
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 7px 18px #176b4b25;
+}
+.primary:hover {
+  background: #115c40;
+}
+.secondary {
+  background: #edf3ee;
+  color: var(--green);
+  padding: 10px 14px;
+}
+.secondary svg {
+  width: 17px;
+}
+/* Temporary feedback messages for successful operations and API errors. */
+.toast {
+  position: fixed;
+  z-index: 20;
+  right: 28px;
+  top: 24px;
+  border-radius: 10px;
+  padding: 13px 16px;
+  display: flex;
+  gap: 24px;
+  box-shadow: 0 12px 35px #17231d2c;
+  color: #fff;
+}
+.toast span {
+  font-size: 20px;
+}
+.toast.error {
+  background: #a4423a;
+}
+.toast.success {
+  background: var(--green);
+}
+/* High-level dashboard summaries for balances, customers, and activity. */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.metrics article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.metric-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+}
+.metric-icon.green {
+  background: #e0f2e8;
+  color: #267153;
+}
+.metric-icon.blue {
+  background: #e4edf5;
+  color: #416985;
+}
+.metric-icon.amber {
+  background: #fff0d7;
+  color: #9b692a;
+}
+.metrics article > div:last-child {
+  display: grid;
+}
+.metrics span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.metrics strong {
+  font: 700 22px "Manrope";
+  margin: 1px 0;
+}
+.metrics small {
+  color: #98a39d;
+  font-size: 11px;
+}
+/* Two-column working area: customer directory on the left and the selected
+   customer's account information on the right. */
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.72fr) minmax(500px, 1.5fr);
+  gap: 20px;
+}
+/* Shared card container used by both sides of the workspace. */
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  overflow: hidden;
+  min-height: 560px;
+}
+.panel-head {
+  padding: 23px 24px 19px;
+  border-bottom: 1px solid #edf0ed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.panel h2 {
+  font: 700 19px "Manrope";
+  letter-spacing: -0.4px;
+  margin-top: 4px;
+}
+.count {
+  background: #eef2ee;
+  color: #68766e;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+/* Scrollable customer selector. The active customer receives a green rail
+   so the current dashboard context is always visible. */
+.customer-list {
+  padding: 10px;
+}
+.customer {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+  gap: 11px;
+  padding: 12px;
+  text-align: left;
+  color: var(--ink);
+}
+.customer:hover,
+.customer.active {
+  background: #f0f5f1;
+}
+.customer.active {
+  box-shadow: inset 3px 0 var(--green);
+}
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #dfece4;
+  color: var(--green);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+.customer > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+}
+.customer strong {
+  font-size: 14px;
+}
+.customer small {
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.customer-total {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+}
+/* Reusable placeholder for loading states and collections with no records. */
+.empty {
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9aa69f;
+  text-align: center;
+  gap: 8px;
+  padding: 25px;
+}
+.empty svg {
+  width: 30px;
+  height: 30px;
+}
+.empty strong {
+  color: #607068;
+}
+.empty.large {
+  min-height: 440px;
+}
+.empty.compact {
+  min-height: 110px;
+}
+/* Account tabs let a customer switch between checking and savings accounts
+   without navigating away from the dashboard. */
+.account-tabs {
+  padding: 18px 22px;
+  display: flex;
+  gap: 10px;
+  overflow: auto;
+}
+.account-tabs button {
+  min-width: 145px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 11px;
+  padding: 11px 13px;
+  text-align: left;
+  display: grid;
+  color: var(--ink);
+}
+.account-tabs button.active {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+.account-tabs span {
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 1px;
+  opacity: 0.65;
+}
+.account-tabs strong {
+  font-size: 13px;
+  margin-top: 4px;
+}
+.account-detail {
+  padding: 2px 24px 24px;
+}
+/* Selected account summary with a subtle decorative ring. */
+.balance-block {
+  padding: 25px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #1a6f50, #0d3e2c);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.balance-block:after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 35px solid #ffffff0a;
+  border-radius: 50%;
+  right: -65px;
+  top: -80px;
+}
+.balance-block span {
+  font-size: 12px;
+  color: #b8d3c7;
+}
+.balance-block strong {
+  display: block;
+  font: 800 34px "Manrope";
+  letter-spacing: -1.2px;
+  margin: 5px 0;
+}
+.balance-block small {
+  color: #a9c9bb;
+  text-transform: capitalize;
+}
+/* Deposit and withdrawal controls share one amount field. */
+.money-actions {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  margin: 14px 0 24px;
+}
+.money-actions input {
+  min-width: 100px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 11px 13px;
+  outline: none;
+}
+.money-actions input:focus {
+  border-color: var(--green);
+}
+.money-actions button {
+  border: 0;
+  border-radius: 9px;
+  background: #dff0e7;
+  color: var(--green);
+  font-weight: 700;
+  padding: 0 15px;
+}
+.money-actions button.withdraw {
+  background: #f5e9e7;
+  color: #9c4841;
+}
+/* Transaction rows distinguish incoming and outgoing funds through color
+   and arrow direction while retaining an accessible text label. */
+.transactions-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #edf0ed;
+  padding-bottom: 11px;
+}
+.transactions-head h3 {
+  font: 700 15px "Manrope";
+}
+.transactions-head span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.transaction {
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f2f0;
+}
+.transaction-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.transaction-icon svg {
+  width: 16px;
+}
+.transaction-icon.deposit {
+  background: #e5f2ea;
+  color: var(--green);
+  transform: rotate(90deg);
+}
+.transaction-icon.withdrawal {
+  background: #f7e9e7;
+  color: #a34c44;
+  transform: rotate(-90deg);
+}
+.transaction > div {
+  display: grid;
+}
+.transaction strong {
+  text-transform: capitalize;
+  font-size: 13px;
+}
+.transaction small {
+  font-size: 10px;
+  color: var(--muted);
+}
+.transaction b {
+  font-size: 13px;
+}
+.transaction b.deposit {
+  color: var(--green);
+}
+.transaction b.withdrawal {
+  color: #a34c44;
+}
+/* Forms open above the dashboard in a focused modal dialog. */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #0c1c16ad;
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.modal {
+  background: #fff;
+  border-radius: 18px;
+  width: min(500px, 100%);
+  padding: 27px;
+  box-shadow: 0 25px 70px #08120e60;
+}
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+.modal h2 {
+  font: 800 24px "Manrope";
+  margin-top: 4px;
+}
+.close {
+  border: 0;
+  background: #eff2ef;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 22px;
+  color: #65736c;
+}
+.modal form {
+  display: grid;
+  gap: 15px;
+}
+.modal label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #58675f;
+}
+.modal input,
+.modal select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 12px 13px;
+  background: #fff;
+  outline: none;
+  color: var(--ink);
+}
+.modal input:focus,
+.modal select:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px #176b4b12;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.submit {
+  width: 100%;
+  margin-top: 7px;
+}
+/* Tablet layout collapses the workspace and reduces the sidebar to icons. */
+@media (max-width: 1000px) {
+  .shell {
+    grid-template-columns: 76px 1fr;
+  }
+  .sidebar {
+    padding: 25px 12px;
+  }
+  .brand {
+    padding: 0 6px 35px;
+  }
+  .brand > span:last-child,
+  .sidebar nav button:not(.active) {
+    font-size: 0;
+  }
+  .sidebar nav button {
+    justify-content: center;
+    padding: 13px;
+  }
+  .sidebar nav button.active {
+    font-size: 0;
+  }
+  .side-foot {
+    font-size: 0;
+    padding: 16px 8px;
+  }
+  .side-foot small {
+    display: none;
+  }
+  .status-dot {
+    margin: 0;
+  }
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+  .customer-panel {
+    min-height: auto;
+  }
+  .customer-list {
+    max-height: 300px;
+    overflow: auto;
+  }
+}
+/* Mobile layout moves navigation to the top and stacks all dashboard cards
+   and transaction controls into a single column. */
+@media (max-width: 680px) {
+  .shell {
+    display: block;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 14px 18px;
+  }
+  .brand {
+    padding: 0;
+  }
+  .brand > span:last-child {
+    display: block;
+  }
+  .sidebar nav {
+    margin-left: auto;
+    display: flex;
+  }
+  .sidebar nav button {
+    display: none;
+  }
+  .sidebar nav button.active {
+    display: flex;
+  }
+  .side-foot {
+    display: none;
+  }
+  main {
+    padding: 25px 15px;
+  }
+  header {
+    align-items: flex-start;
+    gap: 18px;
+  }
+  header .primary {
+    font-size: 0;
+    padding: 13px;
+  }
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+  .workspace {
+    display: block;
+  }
+  .account-panel {
+    margin-top: 15px;
+  }
+  .panel {
+    min-height: auto;
+  }
+  .money-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+  .money-actions input {
+    grid-column: 1/-1;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
