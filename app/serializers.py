@@ -4,6 +4,11 @@ from CheckingAccount import CheckingAccount
 from Customer import Customer
 
 
+"""
+This module contains functions to serialize Customer, Account, and Transaction objects
+into their corresponding response schemas.
+"""
+
 def serialize_customer(customer: Customer) -> CustomerResponse:
     return CustomerResponse(
         customer_id=customer.customer_id,
