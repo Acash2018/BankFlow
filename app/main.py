@@ -1,16 +1,35 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
+from app.config import settings
 from app.routers import accounts, customers, health
-from app.store import BankStore
+from app.store import BankRepository, BankStore, MongoBankStore
 
 
-def create_app() -> FastAPI:
+def create_repository() -> BankRepository:
+    if settings.mongodb_url:
+        return MongoBankStore(settings.mongodb_url, settings.mongodb_database)
+    return BankStore()
+
+
+def create_app(repository: BankRepository | None = None) -> FastAPI:
+    selected_repository = repository or create_repository()
+
+    @asynccontextmanager
+    async def lifespan(application: FastAPI):
+        application.state.bank = selected_repository
+        yield
+        application.state.bank.close()
+
     application = FastAPI(
         title="BankFlow REST API",
         description="Backend API for customers, bank accounts, and transactions.",
         version="1.0.0",
+        lifespan=lifespan,
     )
-    application.state.bank = BankStore()
+    # Also initialize here for TestClient and direct ASGI inspection.
+    application.state.bank = selected_repository
     application.include_router(health.router)
     application.include_router(customers.router, prefix="/api")
     application.include_router(accounts.router, prefix="/api")

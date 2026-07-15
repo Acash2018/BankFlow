@@ -24,6 +24,18 @@ python -m uvicorn api:app --reload
 
 Open `http://127.0.0.1:8000/docs` for the generated OpenAPI/Swagger documentation.
 
+## MongoDB
+
+Copy `.env.example` to `.env` and set `MONGODB_URL` to either a local MongoDB instance or a MongoDB Atlas connection string. The database name defaults to `bankflow`.
+
+```powershell
+Copy-Item .env.example .env
+uv pip install -r requirements.txt
+uv run uvicorn api:app --reload
+```
+
+When `MONGODB_URL` is set, customers, accounts, balances, and transaction history persist in MongoDB. Without it, BankFlow uses its in-memory repository for local experimentation.
+
 ## Endpoints
 
 - `GET /`

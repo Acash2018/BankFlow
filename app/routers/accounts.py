@@ -40,7 +40,7 @@ def deposit(
     store: StoreDependency,
 ) -> AccountResponse:
     account = get_account_or_404(store, account_number)
-    return serialize_account(apply_transaction(account, payload.amount, "deposit"))
+    return serialize_account(apply_transaction(store, account, payload.amount, "deposit"))
 
 
 @router.post("/accounts/{account_number}/withdrawals", response_model=AccountResponse)
@@ -50,7 +50,7 @@ def withdraw(
     store: StoreDependency,
 ) -> AccountResponse:
     account = get_account_or_404(store, account_number)
-    return serialize_account(apply_transaction(account, payload.amount, "withdraw"))
+    return serialize_account(apply_transaction(store, account, payload.amount, "withdraw"))
 
 
 @router.get(

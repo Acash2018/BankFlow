@@ -15,7 +15,7 @@ def create_customer(payload: CustomerCreate, store: StoreDependency) -> Customer
 
 @router.get("", response_model=list[CustomerResponse])
 def list_customers(store: StoreDependency) -> list[CustomerResponse]:
-    return [serialize_customer(customer) for customer in store.customers.values()]
+    return [serialize_customer(customer) for customer in store.list_customers()]
 
 
 @router.get("/{customer_id}", response_model=CustomerResponse)

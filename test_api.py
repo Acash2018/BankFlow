@@ -61,3 +61,9 @@ def test_duplicate_and_missing_resources_return_rest_errors():
     )
     assert duplicate.status_code == 409
     assert client.get("/api/accounts/missing").status_code == 404
+
+
+def setup_function():
+    """Give every test a fresh, empty in-memory repository."""
+
+    app.state.bank = BankStore()
