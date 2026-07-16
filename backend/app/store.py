@@ -18,6 +18,23 @@ class BankRepository(Protocol):
     def save_customer(self, customer: Customer) -> None: ...
     def get_account(self, account_number: str) -> Account | None: ...
     def save_account(self, account: Account) -> None: ...
+    def get_admin_by_email(
+        self,
+        email: str,
+    ) -> dict | None:
+        ...
+
+    def get_admin_by_id(
+        self,
+        admin_id: str,
+    ) -> dict | None:
+        ...
+
+    def save_admin(
+        self,
+        admin: dict,
+    ) -> None: ...
+
     def close(self) -> None: ...
 
 
@@ -29,6 +46,7 @@ class BankStore:
     def __init__(self) -> None:
         self.customers: dict[str, Customer] = {}
         self.accounts: dict[str, Account] = {}
+        self.admins: dict[str, dict] = {}
 
     def list_customers(self) -> list[Customer]:
         return list(self.customers.values())
@@ -47,6 +65,33 @@ class BankStore:
 
     def close(self) -> None:
         pass
+    def get_admin_by_email(
+        self,
+        email: str,
+    ) -> dict | None:
+        """Find an in-memory administrator by email."""
+
+        return next(
+            (
+                admin
+                for admin in self.admins.values()
+                if admin["email"] == email
+            ),
+            None,
+        )
+    def get_admin_by_id(
+        self,
+        admin_id: str,
+    ) -> dict | None:
+        """Find an in-memory administrator by ID."""
+
+        return self.admins.get(admin_id)
+
+
+    def save_admin(self, admin: dict) -> None:
+        """Create or replace an in-memory administrator."""
+
+        self.admins[admin["admin_id"]] = admin
 
 
 class MongoBankStore:
@@ -65,6 +110,9 @@ class MongoBankStore:
         self.customers.create_index([("customer_id", ASCENDING)], unique=True)
         self.accounts.create_index([("account_number", ASCENDING)], unique=True)
         self.accounts.create_index([("customer_id", ASCENDING)])
+        self.admins = self.database["admins"]
+        self.admins.create_index([("admin_id", ASCENDING)], unique=True)
+        self.admins.create_index([("email", ASCENDING)], unique=True)
 
     def list_customers(self) -> list[Customer]:
         return [self._document_to_customer(document) for document in self.customers.find()]
@@ -138,6 +186,51 @@ class MongoBankStore:
             document["minimum_balance"] = account.minimum_balance
         self.accounts.replace_one(
             {"account_number": account.account_number}, document, upsert=True
+        )
+    
+    def get_admin_by_email(
+    self,
+    email: str,
+    ) -> dict | None:
+        """Retrieve an administrator by normalized email."""
+
+        document = self.admins.find_one(
+            {"email": email}
+        )
+
+        if document is None:
+            return None
+
+        # MongoDB's internal _id is unnecessary outside
+        # the repository.
+        document.pop("_id", None)
+        return document
+
+
+    def get_admin_by_id(
+        self,
+        admin_id: str,
+    ) -> dict | None:
+        """Retrieve an administrator by public ID."""
+
+        document = self.admins.find_one(
+            {"admin_id": admin_id}
+        )
+
+        if document is None:
+            return None
+
+        document.pop("_id", None)
+        return document
+
+
+    def save_admin(self, admin: dict) -> None:
+        """Create an administrator or update its stored fields."""
+
+        self.admins.replace_one(
+            {"admin_id": admin["admin_id"]},
+            admin,
+            upsert=True,
         )
 
     def close(self) -> None:

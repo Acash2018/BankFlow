@@ -5,3 +5,8 @@ pytest==8.2.2
 httpx==0.27.0
 pymongo==4.13.2
 python-dotenv==1.1.1
+# Secure password hashing with the recommended Argon2 algorithm.
+pwdlib[argon2]==0.3.0
+
+# Required by Starlette's signed session middleware.
+itsdangerous==2.2.0

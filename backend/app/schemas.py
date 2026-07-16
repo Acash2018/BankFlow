@@ -51,3 +51,24 @@ class ApiInfoResponse(BaseModel):
     version: str
     documentation: str
     health: str
+
+
+class AdminLoginRequest(BaseModel):
+    """Credentials submitted by the administrator."""
+
+    email: EmailStr
+    password: str = Field(min_length=8)
+
+class AdminResponse(BaseModel):
+    """Safe administrator information returned by the API."""
+
+    admin_id: str
+    name: str
+    email: EmailStr
+    role: Literal["admin"]
+
+class LoginResponse(BaseModel):
+    """Response returned after a successful login."""
+
+    admin: AdminResponse
+    message: str

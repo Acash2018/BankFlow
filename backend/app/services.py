@@ -1,10 +1,13 @@
 from fastapi import HTTPException
-
+from uuid import uuid4
+from app.auth import (hash_password, verify_password)
+from app.config import Settings
 from app.schemas import AccountCreate, CustomerCreate
 from app.store import Account, BankRepository
 from CheckingAccount import CheckingAccount
 from Customer import Customer
 from SavingsAccount import SavingsAccount
+from backend.app.routers.auth import normalize_email
 
 
 def create_customer(
@@ -73,3 +76,59 @@ def apply_transaction(
         raise HTTPException(status_code=400, detail=str(error)) from error
     store.save_account(account)
     return account
+
+def ensure_bootstrap_admin(
+    store: BankRepository,
+    settings: Settings,
+) -> None:
+    """Create the first development administrator if needed."""
+
+    # Do nothing when bootstrap credentials are not configured.
+    if not settings.admin_email or not settings.admin_password:
+        return
+
+    email = normalize_email(settings.admin_email)
+
+    # Never replace an existing administrator's password
+    # every time the API restarts.
+    if store.get_admin_by_email(email) is not None:
+        return
+
+    admin = {
+        "admin_id": f"ADMIN-{uuid4().hex[:12].upper()}",
+        "name": settings.admin_name,
+        "email": email,
+
+        # Store only the password hash in MongoDB.
+        "password_hash": hash_password(
+            settings.admin_password
+        ),
+
+        "role": "admin",
+    }
+
+    store.save_admin(admin)
+
+def authenticate_admin(
+    store: BankRepository,
+    email: str,
+    password: str,
+) -> dict | None:
+    """Verify administrator credentials."""
+
+    admin = store.get_admin_by_email(
+        normalize_email(email)
+    )
+
+    # Return the same failure result whether the email or
+    # password is incorrect.
+    if admin is None:
+        return None
+
+    if not verify_password(
+        password,
+        admin["password_hash"],
+    ):
+        return None
+
+    return admin
