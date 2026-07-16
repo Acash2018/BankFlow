@@ -267,7 +267,7 @@ function App() {
           </div>
         )}
 
-        <section className="metrics">
+        {activeView === 'overview' && ( <section className="metrics">
           <article>
             <div className="metric-icon green">
               <Icon name="wallet" />
@@ -302,6 +302,7 @@ function App() {
             </div>
           </article>
         </section>
+        )}
 
         <section className="workspace">
           <div className="panel customer-panel">
