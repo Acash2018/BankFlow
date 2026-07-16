@@ -7,7 +7,12 @@ from app.config import settings
 from app.routers import accounts, customers, health
 from app.store import BankRepository, BankStore, MongoBankStore
 from app.services import ensure_bootstrap_admin
-from backend.app.routers import auth
+from app.routers import (
+    accounts,
+    auth,
+    customers,
+    health,
+)
 
 def create_repository() -> BankRepository:
     if settings.mongodb_url:
@@ -69,8 +74,6 @@ def create_app(repository: BankRepository | None = None) -> FastAPI:
 
     
 
-    # Ensure the bootstrap admin exists when the app starts.
-    ensure_bootstrap_admin(application.state.bank)
 
     return application
 

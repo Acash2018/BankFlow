@@ -1,6 +1,5 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, Request
 
 from app.store import Account, BankRepository
 from Customer import Customer

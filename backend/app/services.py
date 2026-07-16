@@ -7,8 +7,12 @@ from app.store import Account, BankRepository
 from CheckingAccount import CheckingAccount
 from Customer import Customer
 from SavingsAccount import SavingsAccount
-from backend.app.routers.auth import normalize_email
 
+from app.auth import (
+    hash_password,
+    normalize_email,
+    verify_password,
+)
 
 def create_customer(
     store: BankRepository,

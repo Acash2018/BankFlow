@@ -72,8 +72,6 @@ def login(
             detail="Invalid email or password",
         )
 
-    # Remove any previous session before assigning the
-    # authenticated administrator.
     request.session.clear()
     request.session["admin_id"] = admin["admin_id"]
 
@@ -89,31 +87,30 @@ def login(
         message="Login successful",
     )
 
-    @router.get(
+
+# This decorator must start at the left margin.
+@router.get(
     "/me",
     response_model=AdminResponse,
 )
-    def current_admin(
-        admin: AdminDependency,
-    ) -> AdminResponse:
-        """Restore the currently authenticated administrator."""
+def current_admin(
+    admin: AdminDependency,
+) -> AdminResponse:
+    """Return the currently authenticated administrator."""
 
-        return admin
+    return admin
 
 
-    @router.post(
-        "/logout",
+# This decorator must also start at the left margin.
+@router.post(
+    "/logout",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def logout(request: Request) -> Response:
+    """Destroy the current administrator session."""
+
+    request.session.clear()
+
+    return Response(
         status_code=status.HTTP_204_NO_CONTENT,
     )
-
-    
-    def logout(
-        request: Request,
-    ) -> Response:
-        """Destroy the current administrator session."""
-
-        request.session.clear()
-
-        return Response(
-            status_code=status.HTTP_204_NO_CONTENT
-        )
