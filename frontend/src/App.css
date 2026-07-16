@@ -1,6 +1,70 @@
 /* Shared colors used throughout the BankFlow interface. Keeping these values
    in one place makes future branding changes easier and more consistent. */
-:root {
+/* Base style shared by every reusable button. */
+.button {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease,
+    opacity 150ms ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.button:focus-visible {
+  outline: 3px solid rgba(23, 107, 75, 0.25);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.button--primary {
+  background: var(--green);
+  color: white;
+}
+
+.button--primary:hover:not(:disabled) {
+  background: #115c40;
+}
+
+.button--secondary,
+.button--deposit {
+  background: #dff0e7;
+  color: var(--green);
+}
+
+.button--withdraw {
+  background: #f5e9e7;
+  color: #9c4841;
+}
+
+.button--nav {
+  width: 100%;
+  background: transparent;
+  color: #8fa29a;
+  justify-content: flex-start;
+}
+
+.button--nav.active,
+.button--nav:hover {
+  background: #1d392f;
+  color: white;
+}
+
+
+   :root {
   --ink: #17231d;
   --muted: #718078;
   --line: #dde3dc;
