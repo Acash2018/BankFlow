@@ -14,12 +14,6 @@ class CustomerResponse(CustomerCreate):
     account_numbers: list[str]
     total_balance: float
 
-class AccessTokenResponse(BaseModel):
-    access_token: str
-    token_type: Literal["bearer"] = "bearer"
-    admin: AdminResponse
-
-
 class AccountCreate(BaseModel):
     account_number: str = Field(min_length=1)
     account_type: Literal["checking", "savings"]
@@ -71,6 +65,14 @@ class AdminResponse(BaseModel):
     name: str
     email: EmailStr
     role: Literal["admin"]
+
+
+class AccessTokenResponse(BaseModel):
+    """JWT and safe administrator data returned after login."""
+
+    access_token: str
+    token_type: Literal["bearer"] = "bearer"
+    admin: AdminResponse
 
 class LoginResponse(BaseModel):
     """Response returned after a successful login."""

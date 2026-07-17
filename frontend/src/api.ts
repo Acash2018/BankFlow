@@ -17,6 +17,23 @@ export interface Admin {
   role: "admin";
 }
 
+// Name used to store the access token in this browser session.
+const TOKEN_KEY = "bankflow_access_token";
+
+// Save the JWT after a successful login.
+export function saveAccessToken(token: string) {
+  sessionStorage.setItem(TOKEN_KEY, token);
+}
+
+// Delete the JWT when the administrator logs out.
+export function removeAccessToken() {
+  sessionStorage.removeItem(TOKEN_KEY);
+}
+
+function getAccessToken() {
+  return sessionStorage.getItem(TOKEN_KEY);
+}
+
 
 // Describes the information sent to the login endpoint.
 
@@ -84,6 +101,27 @@ export interface AccountInput {
   overdraft_limit: number;
   minimum_balance: number;
 }
+
+
+
+export interface Admin {
+  admin_id: string;
+  name: string;
+  email: string;
+  role: "admin";
+}
+
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+
+// The login endpoint now returns a JWT.
+export interface LoginResponse {
+  access_token: string;
+  token_type: "bearer";
+  admin: Admin;
+}
 /**
  * 
  * 
@@ -92,21 +130,48 @@ export interface AccountInput {
  */
 
 
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+async function request<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
+  // Read the current JWT before every request.
+  const token = getAccessToken();
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
-    credentials: "include",
-    headers: { "Content-Type": "application/json", ...options.headers },
+
+    headers: {
+      "Content-Type": "application/json",
+
+      // Send the token using the standard OAuth bearer format.
+      //
+      // This header is omitted for login because no token exists yet.
+      ...(token
+        ? { Authorization: `Bearer ${token}` }
+        : {}),
+
+      // Allow a particular request to add or override headers.
+      ...options.headers,
+    },
   });
 
   if (!response.ok) {
     const error = await response
       .json()
-      .catch(() => ({ detail: "Something went wrong" }));
-    throw new Error(error.detail ?? `Request failed (${response.status})`);
+      .catch(() => ({
+        detail: "Something went wrong",
+      }));
+
+    throw new Error(
+      error.detail ?? `Request failed (${response.status})`,
+    );
   }
 
-  if (response.status === 204) return undefined as T;
+  // Some successful requests do not return JSON.
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
   return response.json() as Promise<T>;
 }
 

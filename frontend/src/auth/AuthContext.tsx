@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { api, type Admin, type LoginInput } from "../api";
 import { AuthContext } from "./auth-context";
+import {
+  api,
+  removeAccessToken,
+  saveAccessToken,
+  type Admin,
+  type LoginInput,
+} from "../api";
 
 // Centralize the administrator and session state for the entire frontend.
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -18,14 +24,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(async (input: LoginInput) => {
-    const response = await api.login(input);
-    setAdmin(response.admin);
-  }, []);
+  const response = await api.login(input);
+
+  saveAccessToken(response.access_token);
+  setAdmin(response.admin);
+}, []);
 
   const logout = useCallback(async () => {
-    await api.logout();
-    setAdmin(null);
-  }, []);
+  removeAccessToken();
+  setAdmin(null);
+}, []);
+
+
 
   const value = useMemo(
     () => ({ admin, checkingSession, login, logout }),

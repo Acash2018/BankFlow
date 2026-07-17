@@ -2,7 +2,6 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.sessions import SessionMiddleware
 from app.config import settings
 from app.routers import accounts, customers, health
 from app.store import BankRepository, BankStore, MongoBankStore
@@ -22,10 +21,8 @@ def create_repository() -> BankRepository:
 
 def create_app(repository: BankRepository | None = None) -> FastAPI:
     selected_repository = repository or create_repository()
-    if not settings.session_secret:
-        raise RuntimeError(
-            "SESSION_SECRET must be configured"
-        )
+    if not settings.jwt_secret:
+        raise RuntimeError("JWT_SECRET must be configured")
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -51,19 +48,6 @@ def create_app(repository: BankRepository | None = None) -> FastAPI:
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
-    )
-    application.add_middleware(
-        SessionMiddleware,
-        secret_key=settings.session_secret,
-        # JavaScript cannot read this cookie.
-        https_only=settings.cookie_secure,
-
-        # Same-site requests only. Use the same hostname
-        # for frontend and backend during development.
-        same_site="strict",
-
-        # Session expires when the browser session ends.
-        max_age=None,
     )
     # Also initialize here for TestClient and direct ASGI inspection.
     application.state.bank = selected_repository

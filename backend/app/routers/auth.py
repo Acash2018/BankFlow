@@ -1,128 +1,65 @@
-from pwdlib import PasswordHash
-from fastapi import (
-    APIRouter,
-    HTTPException,
-    Request,
-    Response,
-    status,
-)
+from fastapi import APIRouter, HTTPException, Response, status
 
+from app.auth import create_access_token
 from app.dependencies import (
     AdminDependency,
+    SettingsDependency,
     StoreDependency,
 )
-from app.schemas import (
-    AdminLoginRequest,
-    AdminResponse,
-    LoginResponse,
-)
+from app.schemas import AccessTokenResponse, AdminLoginRequest, AdminResponse
 from app.services import authenticate_admin
-from backend.app.auth import create_access_token
-
-# Ask pwdlib to use its recommended password-hashing
-
-password_hash = PasswordHash.recommended()
-
-def hash_password(password: str) -> str:
-    """Convert a plain-text password into a secure hash."""
-
-    return password_hash.hash(password)
-
-def verify_password(
-    password: str,
-    stored_hash: str,
-) -> bool:
-    """Check a password against its stored hash."""
-
-    return password_hash.verify(
-        password,
-        stored_hash,
-    )
-
-def normalize_email(email: str) -> str:
-    """Store and compare administrator emails consistently."""
-
-    return email.strip().lower()
-
-router = APIRouter(
-    prefix="/auth",
-    tags=["Authentication"],
-)
 
 
-@router.post(
-    "/login",
-    response_model=LoginResponse,
-)
+router = APIRouter(prefix="/auth", tags=["Authentication"])
+
+
+@router.post("/login", response_model=AccessTokenResponse)
 def login(
-    payload: LoginRequest,
+    payload: AdminLoginRequest,
     store: StoreDependency,
     settings: SettingsDependency,
-):
+) -> AccessTokenResponse:
+    """Verify administrator credentials and issue an access token."""
 
     admin = authenticate_admin(
         store=store,
         email=payload.email,
         password=payload.password,
     )
-
     if admin is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
-    
+
     token = create_access_token(
-        admin_id=admin.admin_id,
-        email=admin.email,
+        admin_id=admin["admin_id"],
+        email=admin["email"],
         secret=settings.jwt_secret,
         algorithm=settings.jwt_algorithm,
         expiration_minutes=settings.jwt_expiration_minutes,
     )
 
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "admin": serialize_admin(admin),
-    }
-
-   
-    public_admin = AdminResponse(
-        admin_id=admin["admin_id"],
-        name=admin["name"],
-        email=admin["email"],
-        role=admin["role"],
-    )
-
-    return LoginResponse(
-        admin=public_admin,
-        message="Login successful",
+    return AccessTokenResponse(
+        access_token=token,
+        admin=AdminResponse(
+            admin_id=admin["admin_id"],
+            name=admin["name"],
+            email=admin["email"],
+            role=admin["role"],
+        ),
     )
 
 
-# This decorator must start at the left margin.
-@router.get(
-    "/me",
-    response_model=AdminResponse,
-)
-def current_admin(
-    admin: AdminDependency,
-) -> AdminResponse:
-    """Return the currently authenticated administrator."""
+@router.get("/me", response_model=AdminResponse)
+def current_admin(admin: AdminDependency) -> AdminResponse:
+    """Return the administrator represented by the bearer token."""
 
     return admin
 
 
-# This decorator must also start at the left margin.
-@router.post(
-    "/logout",
-    status_code=status.HTTP_204_NO_CONTENT,
-)
-def logout(request: Request) -> Response:
-    """Destroy the current administrator session."""
+@router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
+def logout() -> Response:
+    """Complete logout; the frontend removes its stored JWT."""
 
-    request.session.clear()
-
-    return Response(
-        status_code=status.HTTP_204_NO_CONTENT,
-    )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
