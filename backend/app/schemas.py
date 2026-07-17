@@ -14,6 +14,11 @@ class CustomerResponse(CustomerCreate):
     account_numbers: list[str]
     total_balance: float
 
+class AccessTokenResponse(BaseModel):
+    access_token: str
+    token_type: Literal["bearer"] = "bearer"
+    admin: AdminResponse
+
 
 class AccountCreate(BaseModel):
     account_number: str = Field(min_length=1)

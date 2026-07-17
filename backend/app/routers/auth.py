@@ -17,6 +17,7 @@ from app.schemas import (
     LoginResponse,
 )
 from app.services import authenticate_admin
+from backend.app.auth import create_access_token
 
 # Ask pwdlib to use its recommended password-hashing
 
@@ -54,16 +55,15 @@ router = APIRouter(
     response_model=LoginResponse,
 )
 def login(
-    payload: AdminLoginRequest,
-    request: Request,
+    payload: LoginRequest,
     store: StoreDependency,
-) -> LoginResponse:
-    """Authenticate an administrator and create a session."""
+    settings: SettingsDependency,
+):
 
     admin = authenticate_admin(
-        store,
-        payload.email,
-        payload.password,
+        store=store,
+        email=payload.email,
+        password=payload.password,
     )
 
     if admin is None:
@@ -71,10 +71,22 @@ def login(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
+    
+    token = create_access_token(
+        admin_id=admin.admin_id,
+        email=admin.email,
+        secret=settings.jwt_secret,
+        algorithm=settings.jwt_algorithm,
+        expiration_minutes=settings.jwt_expiration_minutes,
+    )
 
-    request.session.clear()
-    request.session["admin_id"] = admin["admin_id"]
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "admin": serialize_admin(admin),
+    }
 
+   
     public_admin = AdminResponse(
         admin_id=admin["admin_id"],
         name=admin["name"],

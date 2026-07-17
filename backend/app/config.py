@@ -14,10 +14,29 @@ class Settings:
 # Secret used to sign administrator session cookies.
     #
     # Production must use a long, unpredictable value.
-    session_secret: str = os.getenv(
-        "SESSION_SECRET",
+    jwt_secret: str = os.getenv(
+        "JWT_SECRET",
         "",
     )
+
+    # Algorithm used to sign JWT access tokens.
+    jwt_algorithm: str = os.getenv(
+        "JWT_ALGORITHM",
+        "HS256",
+    )
+
+    # Number of minutes before an access token expires.
+    #
+    # Environment variables are strings, so int() converts
+    # the value into the integer expected by the application.
+    jwt_expiration_minutes: int = int(
+        os.getenv("JWT_EXPIRATION_MINUTES", "30"),
+    )
+
+
+
+
+
 
     # Development administrator used only to create the first
     # admin document when the application starts.

@@ -11,11 +11,13 @@ import {
   type Transaction,
 } from "./api";
 import { Sidebar, type DashboardView } from "./components/layout/Sidebar";
+import { useAuth } from "./auth/useAuth";
 import { Button } from "./components/ui/Button";
 import { Icon } from "./components/ui/Icon";
 import { AccountsView } from "./views/AccountsView";
 import { CustomersView } from "./views/CustomersView";
 import { OverviewView } from "./views/OverviewView";
+import { LoginView } from "./views/LoginView";
 import "./App.css";
 
 interface ModalProps {
@@ -58,6 +60,8 @@ function Modal({ title, onClose, children }: ModalProps) {
 }
 
 function App() {
+  const { admin, checkingSession, login, logout } = useAuth();
+
   // App owns shared state so all three views stay synchronized.
   const [activeView, setActiveView] = useState<DashboardView>("overview");
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -94,12 +98,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    void loadCustomers();
-  }, [loadCustomers]);
+    if (admin) {
+      void loadCustomers();
+    }
+  }, [admin, loadCustomers]);
 
   // Reload accounts whenever the selected customer changes.
   useEffect(() => {
-    if (!selectedCustomer) {
+    if (!admin || !selectedCustomer) {
       setAccounts([]);
       setSelectedAccount(null);
       return;
@@ -119,11 +125,11 @@ function App() {
         );
       })
       .catch((err: Error) => setError(err.message));
-  }, [selectedCustomer]);
+  }, [admin, selectedCustomer]);
 
   // Reload transaction history whenever the selected account changes.
   useEffect(() => {
-    if (!selectedAccount) {
+    if (!admin || !selectedAccount) {
       setTransactions([]);
       return;
     }
@@ -132,7 +138,7 @@ function App() {
       .listTransactions(selectedAccount.account_number)
       .then(setTransactions)
       .catch((err: Error) => setError(err.message));
-  }, [selectedAccount]);
+  }, [admin, selectedAccount]);
 
   async function submitCustomer(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -236,6 +242,22 @@ function App() {
 
   const currentPage = pageContent[activeView];
 
+  // Wait for /auth/me before deciding whether to show login or the dashboard.
+  if (checkingSession) {
+    return (
+      <div className="auth-loading">
+        <span className="brand-mark">
+          <Icon name="bank" />
+        </span>
+        <strong>Loading BankFlow…</strong>
+      </div>
+    );
+  }
+
+  if (!admin) {
+    return <LoginView onLogin={login} />;
+  }
+
   return (
     <div className="shell">
       <Sidebar activeView={activeView} onViewChange={setActiveView} />
@@ -248,16 +270,26 @@ function App() {
             <p>{currentPage.description}</p>
           </div>
 
-          {/* Dedicated views provide their own context-specific actions. */}
-          {activeView === "overview" && (
-            <Button
-              variant="primary"
-              icon={<Icon name="plus" />}
-              onClick={() => setModal("customer")}
-            >
-              New customer
-            </Button>
-          )}
+          <div className="header-actions">
+            {activeView === "overview" && (
+              <Button
+                variant="primary"
+                icon={<Icon name="plus" />}
+                onClick={() => setModal("customer")}
+              >
+                New customer
+              </Button>
+            )}
+            <div className="admin-menu">
+              <span>
+                <strong>{admin.name}</strong>
+                <small>{admin.email}</small>
+              </span>
+              <Button variant="secondary" onClick={() => void logout()}>
+                Log out
+              </Button>
+            </div>
+          </div>
         </header>
 
         {error && (

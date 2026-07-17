@@ -1,5 +1,6 @@
 from typing import Annotated
-
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
 
 from app.store import Account, BankRepository
 from Customer import Customer
@@ -12,6 +13,48 @@ from fastapi import (
 )
 
 from app.schemas import AdminResponse
+from backend.app.auth import decode_access_token
+
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/api/auth/login",
+)
+
+
+def get_current_admin(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    store: StoreDependency,
+    settings: SettingsDependency,
+):
+    try:
+        payload = decode_access_token(
+            token=token,
+            secret=settings.jwt_secret,
+            algorithm=settings.jwt_algorithm,
+        )
+    except ValueError:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid or expired access token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    admin_id = payload.get("sub")
+
+    if not admin_id:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid access token",
+        )
+
+    admin = store.get_admin(admin_id)
+
+    if admin is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Administrator no longer exists",
+        )
+
+    return admin
 
 def get_store(request: Request) -> BankRepository:
     return request.app.state.bank
