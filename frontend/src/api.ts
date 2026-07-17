@@ -17,6 +17,7 @@ export interface Admin {
   role: "admin";
 }
 
+
 // Describes the information sent to the login endpoint.
 
 export interface LoginInput {
@@ -26,8 +27,9 @@ export interface LoginInput {
 
 //Describes information returned by the login endpoint.
 export interface LoginResponse {
+  access_token: string;
+  token_type: "bearer";
   admin: Admin;
-  message: string;
 }
 
 //Describes a customer object retuned by the backend.
